@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User{
+  id Int @id @default(autoincrement())
+  name Sting
+  email @uniq
+  password Sting
+  userId Int
+
+  salaries Salary[]
+  expense  Expense[]
+}
+model Salary{
+  id Int @id @default(autoincrement())
+  date DateTime(now())
+  amount Int
+  userId Int
+
+  
+}
+model Expense{
+  id Int @id @default(autoincrement())
+  date DateTime(now())
+  amount Int
+  userId Int
+
+  
+}
