@@ -9,27 +9,27 @@ datasource db {
 
 model User{
   id Int @id @default(autoincrement())
-  name Sting
-  email @uniq
-  password Sting
-  userId Int
+  name String
+  email String @unique
+  password String
 
   salaries Salary[]
-  expense  Expense[]
+  expenses  Expense[]
 }
 model Salary{
   id Int @id @default(autoincrement())
-  date DateTime(now())
+  date DateTime @default(now())
   amount Int
   userId Int
 
-  
+  user User @relation(fields:[userId], references:[id])
 }
 model Expense{
   id Int @id @default(autoincrement())
-  date DateTime(now())
+  date DateTime @default(now())
   amount Int
   userId Int
+  type String
 
-  
+  user User @relation(fields:[userId], references:[id])
 }
