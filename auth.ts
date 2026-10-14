@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import {signInSchema} from "@/lib/schemas"
 import {prisma} from '@/lib/db'
 import bcrypt from "bcryptjs";
+import { use } from "react";
 
 
 export const {signIn, signOut, auth, handlers} = NextAuth({
@@ -24,5 +25,17 @@ export const {signIn, signOut, auth, handlers} = NextAuth({
     })],
     pages:{
         signIn: '/login'
+    },
+    callbacks:{
+        jwt({token, user}){
+            if(user){
+                token.id = user.id
+            }
+            return token
+        },
+        session({token, session}){
+            session.user.id = String(token.id) 
+            return session
+        }
     }
 })

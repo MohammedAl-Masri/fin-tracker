@@ -4,6 +4,8 @@ import { z } from "zod"
 import { prisma } from '@/lib/db'
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
+import { signIn, signOut } from "@/auth";
+import { AuthError } from "next-auth";
 
 export type RegisterState  = {
     errors?: {
@@ -39,4 +41,20 @@ export const register = async(prevState : unknown, formData : FormData) : Promis
     })
 
     redirect('/login')
+}
+
+export const login = async (prevState : unknown, formData : FormData)=>{
+    formData.set('redirectTo', "/dashboard")
+    try{
+        await signIn('credentials', formData)
+    }catch(error){
+        if(error instanceof AuthError){
+            return { message :'The email or the password is wrong!'}
+        }
+        throw error
+    }
+}
+
+export const logout = async()=>{
+    await signOut({redirectTo: '/login'})
 }
