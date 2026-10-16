@@ -3,7 +3,6 @@ import Credentials from "next-auth/providers/credentials";
 import {signInSchema} from "@/lib/schemas"
 import {prisma} from '@/lib/db'
 import bcrypt from "bcryptjs";
-import { use } from "react";
 
 
 export const {signIn, signOut, auth, handlers} = NextAuth({

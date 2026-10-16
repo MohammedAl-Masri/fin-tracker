@@ -1,11 +1,23 @@
 'use server'
-import { signUpSchema } from "./schemas"
+import { salarySchema, signUpSchema } from "./schemas"
 import { z } from "zod"
 import { prisma } from '@/lib/db'
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
+import { auth } from "@/auth";
+import { error } from "console";
+
+type FormState ={
+    message?: string,
+    errors?:
+            {formErrors: string[],
+            fieldErrors : {
+            amount?: string[],
+            date?: string[]
+    }}
+}
 
 export type RegisterState  = {
     errors?: {
@@ -57,4 +69,38 @@ export const login = async (prevState : unknown, formData : FormData)=>{
 
 export const logout = async()=>{
     await signOut({redirectTo: '/login'})
+}
+
+export const addSalary = async(prevState : unknown, formData : FormData) : Promise<FormState> =>{
+    const session = await auth()
+
+    if(!session?.user?.id){ 
+        return { message :`You have to sign in!`}
+    }
+
+    const data = Object.fromEntries(formData)
+
+    const result = salarySchema.safeParse(data)
+    if(!result.success){
+        return {errors: z.flattenError(result.error)}
+    }
+
+    try{
+        await prisma.salary.create({
+            data:{
+                date: result.data.date,
+                amount: result.data.amount,
+                userId: Number(session.user.id)
+            }
+        })
+    }catch(error){
+        console.error(error)
+        return {
+            message : 'Failed to add salary'
+        }
+    }
+
+    return {
+        message: 'Salary added successfully!'
+    }
 }
