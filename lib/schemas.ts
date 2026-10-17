@@ -16,9 +16,15 @@ export const salarySchema = z.object({
     date: z.coerce.date()
 })
 
+export const expenseTypes = [
+    'Food','Transportation','Bill','Internet','Shopping',
+                    'Electricity','Water','Healthcare','Other'
+] as const
+
 export const expenseSchema = z.object({
     amount: z.coerce.number().int().positive(),
     date: z.coerce.date(),
-    type : z.
+    type : z.enum(expenseTypes,
+                {error:'Please select an expense type'})
 })
 

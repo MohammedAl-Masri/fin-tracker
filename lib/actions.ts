@@ -1,5 +1,5 @@
 'use server'
-import { salarySchema, signUpSchema } from "./schemas"
+import { expenseSchema, salarySchema, signUpSchema } from "./schemas"
 import { z } from "zod"
 import { prisma } from '@/lib/db'
 import bcrypt from "bcryptjs";
@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
 import { auth } from "@/auth";
-import { error } from "console";
+import { revalidatePath } from "next/cache";
 
 type FormState ={
     message?: string,
@@ -15,7 +15,8 @@ type FormState ={
             {formErrors: string[],
             fieldErrors : {
             amount?: string[],
-            date?: string[]
+            date?: string[],
+            type?: string[]
     }}
 }
 
@@ -100,7 +101,42 @@ export const addSalary = async(prevState : unknown, formData : FormData) : Promi
         }
     }
 
+    revalidatePath('/dashboard')
+
     return {
         message: 'Salary added successfully!'
+    }
+}
+
+export const addExpense = async(prevState : unknown, formData : FormData) : Promise<FormState> =>{
+    const session = await auth()
+    if(!session?.user?.id) {
+        return { message :`You have to sign in!`}
+    }
+    const data = Object.fromEntries(formData)
+    const result = expenseSchema.safeParse(data)
+    if(!result.success){
+        return {errors: z.flattenError(result.error)}
+    }
+    try{
+        await prisma.expense.create({
+            data:{
+                amount: result.data.amount,
+                date: result.data.date,
+                type: result.data.type,
+                userId: Number(session.user.id)
+            }
+        })
+    }catch(error){
+        console.error(error)
+        return{
+            message : 'Failed to add expense!'
+        }
+    }
+
+    revalidatePath('/dashboard')
+
+    return {
+        message : 'Expense added successfully!'
     }
 }
