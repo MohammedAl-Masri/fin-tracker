@@ -1,20 +1,21 @@
 
+import { Receipt, TrendingUp, Wallet } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="relative h-[calc(100vh-4rem)]">
+    <div className="relative h-[100vh]">
       <Image
         src="/bg-fin.jpg"
         fill
         alt="Home page background"
-        className="object-cover object-center"
+        className="object-cover object-center z-[-1]"
         priority
         unoptimized
       />
 
-      <section>
+      <section className='h-[100vh] '>
         <h1 className="text-3xl font-bold text-gray-800 drop-shadow-lg text-center pt-8">
           Take Control of Your Finances
         </h1>
@@ -33,15 +34,28 @@ export default function Home() {
           </button>
         </div>
       </section>
-      <section>
+      <section className="h-[100vh] bg-gradient-to-r from-gray-400 to-gray-500 bg-opacity-50 drop-shadow-lg">
         <h2 className="text-3xl font-bold text-gray-800 drop-shadow-lg text-center pt-8 drop-shadow-lg ">
-          Features
+          Everything You Need to Manage Your Money
         </h2>
-        <div>
-          <div>
-            <h3 className="drop-shadow-lg ">Track Your Income</h3>
+        <div className='flex justify-center flex-wrap gap-10 mt-10'>
+          <div className='bg-gradient-to-r from-gray-400 to-gray-500 drop-shadow-lg mx-10 p-5
+                          rounded-lg hover:scale-105 transition'>
+            <h3 className="font-bold text-gray-900 text-lg flex gap-3">Track Your Income <Wallet /></h3>
             <p className="">Keep all your salary/income records organized in one place. Add amounts and dates
               so you always know how much you&apos;re earning.</p>
+          </div> 
+
+          <div className='bg-gradient-to-r from-gray-400 to-gray-500 drop-shadow-lg mx-10 p-5
+                          rounded-lg hover:scale-105 transition'>
+            <h3 className="font-bold text-gray-900 text-lg flex gap-3">Manage Your Expenses <Receipt /></h3>
+            <p className="">Record your daily expenses and see exactly where your money is going. Stay aware of your spending habits.</p>
+          </div>
+
+          <div className='bg-gradient-to-r from-gray-400 to-gray-500 drop-shadow-lg mx-10 p-5
+                          rounded-lg hover:scale-105 transition'>
+            <h3 className="font-bold text-gray-900 text-lg flex gap-3">Understand Your Finances <TrendingUp /></h3>
+            <p className="">Get a clear overview of your income, expenses, and balance with simple statistics and visual charts.</p>
           </div>
         </div>
       </section>

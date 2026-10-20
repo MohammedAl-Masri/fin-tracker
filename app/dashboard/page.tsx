@@ -10,7 +10,7 @@ const WelcomeMessage = async()=>{
     const session = await auth()
     if(!session) redirect('/login')
     return (
-        <h1>Welcome {session.user?.name}</h1>
+        <h1 className="text-3xl font-bold text-gray-800 py-4 text-center">Welcome {session.user?.name} </h1>
     )
 }
 const SalaryList = async()=>{
@@ -28,12 +28,26 @@ const SalaryList = async()=>{
     }
 
     return(
-        <div>{salary.map((i)=> (
-                <div key={i.id}>
-                    <div>Salary: {i.amount}</div>
-                    <div>Date: {i.date.toLocaleDateString()}</div>
-                </div>
-            ))}
+        <div>
+            <h2 className="font-bold text-2xl text-gray-800 mx-10">Salary History</h2>
+            <table className="w-full text-center">
+                <thead>
+                    <tr className="border-b">
+                    <th className="px-4 py-3 ">Salary</th>
+                    <th className="px-4 py-3 ">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {salary.map((i) => (
+                    <tr key={i.id} className="border-b">
+                        <td className="px-4 py-3">{i.amount}</td>
+                        <td className="px-4 py-3">
+                        {i.date.toLocaleDateString()}
+                        </td>
+                    </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     )
 }
@@ -53,13 +67,31 @@ const ExpenseList = async()=>{
     }
 
     return(
-        <div className="border">{expense.map((i)=>(
-            <div key={i.id}>
-                <div>Amount: {i.amount}</div>
-                <div>Date: {i.date.toLocaleDateString()}</div>
-                <div>Type: {i.type}</div>
-            </div>
-        ))}</div>
+        <div className="w-full mb-10">
+            <h2 className="mb-4 text-2xl font-bold mx-10 my-5 text-gray-800">
+                Expense History
+            </h2>
+            <table className="w-85 rounded-xl bg-black/30 backdrop-blur-sm mx-auto ">
+                <thead>
+                        <tr className="border-b border-white/20">
+                            <th className="py-3">Amount</th>
+                            <th className="py-3">Date</th>
+                            <th className="py-3">Type</th>
+                        </tr>
+                </thead>
+                <tbody>
+                    {expense.map((i) => (
+                        <tr key={i.id} className="border-b border-white/10 text-center">
+                            <td className="py-3 px-3">{i.amount}</td>
+                            <td className="py-3 px-3">
+                                {i.date.toLocaleDateString()}
+                            </td>
+                            <td className="py-3 px-3">{i.type}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     )
 }
 
@@ -89,10 +121,19 @@ const Totals = async()=>{
     const balance =  totalSalary - totalExpense
 
     return (
-        <div className="border border-red-600">
-            <div>Total Salary: {totalSalary}</div>
-            <div>Total Expense: {totalExpense}</div>
-            <div>The final amount: {balance}</div>
+        <div className="mx-10 mb-10">
+            <div className="bg-gray-400 rounded-l-lg p-5 mb-5">
+                <div className="font-bold text-green-600">Total Salary:
+                    <span className="text-black pl-3">{totalSalary} $</span></div>
+            </div>
+            <div className="bg-gray-400 rounded-l-lg p-5 mb-5">
+                <div className="font-bold text-red-700">Total Expense:
+                    <span className="text-black pl-3">{totalExpense} $</span></div>
+            </div>
+            <div className="bg-gray-400 rounded-l-lg p-5 mb-5">
+                <div className="font-bold text-gray-800 ">The final amount:
+                    <span className="text-black pl-3">{balance} $</span></div>
+            </div>
         </div>
     )
 }
@@ -100,7 +141,7 @@ const Totals = async()=>{
 
 const DashboardPage = () => {
     return(
-    <div>
+    <div className="bg-gradient-to-r from-gray-300 to-gray-400">
         <Suspense fallback={'Loading...'}>
             <WelcomeMessage />
         </Suspense>
@@ -116,7 +157,8 @@ const DashboardPage = () => {
         <SalaryForm />
         <ExpenseForm />
         <form action={logout}>
-            <button>Logout</button>
+            <button className="font-bold p-3 m-3 bg-red-700 test-2xl hover:scale-105 rounded-t-lg text-white
+                                transition m-auto w-full">Logout</button>
         </form>
     </div>)
 }

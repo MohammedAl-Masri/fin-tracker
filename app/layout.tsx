@@ -32,7 +32,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <li className="px-4 w-1 hover:scale-120 transition">
                 <Link href="/stats"><StarsIcon/></Link>
               </li>
-              <li className="px-4 w-1 hover:scale-120 transition">
+              <li className="px-4 w-1 hover:scale-120 transition text-red-500">
                 <Link href="/logout"><Outdent/></Link>
               </li>
             </ul>
