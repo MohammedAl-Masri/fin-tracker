@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import { BookDashedIcon, LogIn, Outdent, PlusSquareIcon, StarsIcon } from "lucide-react";
+import { logout } from "@/lib/actions";
 
 
 export const metadata: Metadata = {
@@ -33,7 +34,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 <Link href="/stats"><StarsIcon/></Link>
               </li>
               <li className="px-4 w-1 hover:scale-120 transition text-red-500">
-                <Link href="/logout"><Outdent/></Link>
+                <form action={logout}>
+                  <button><Outdent/></button>
+                </form>
               </li>
             </ul>
           </nav>

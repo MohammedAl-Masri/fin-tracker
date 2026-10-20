@@ -29,9 +29,11 @@ const ExpenseChartData = async() => {
 
 const StatsPage = () => {
     return (
-        <Suspense fallback={'Loading...'}>
-            <ExpenseChartData />
-        </Suspense>
+        <div className="bg-gradient-to-r from-gray-300 to-gray-400 min-h-[calc(100vh-65px)]">
+            <Suspense fallback={'Loading...'}>
+                <ExpenseChartData />
+            </Suspense>
+        </div>
     )
 }
 
